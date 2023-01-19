@@ -1,10 +1,8 @@
-package com.example.demo.repositorory
+package br.com.g6.orgfinanceiro.repository
 
-import com.example.demo.model.Users
+import br.com.g6.orgfinanceiro.model.Users
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import java.net.PasswordAuthentication
-import java.util.*
 
 //interface que extends da JPArEPOSITORY, para fazer todo o CRUD de acesso ao baco de dados
 @Repository

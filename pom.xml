@@ -8,11 +8,11 @@
 		<version>2.4.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.eprogramar</groupId>
-	<artifactId>bank-api</artifactId>
+	<groupId>br.com.g6</groupId>
+	<artifactId>organizadorfinanceir</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>bank-api</name>
-	<description>Bank Web API</description>
+	<name>organizadorfinanceiro</name>
+	<description>Projeto Integrador - Organizador Financeiro</description>
 
 	<properties>
 		<java.version>11</java.version>
@@ -45,10 +45,11 @@
 			<artifactId>kotlin-stdlib-jdk8</artifactId>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-
+			<version>8.0.26</version>
 		</dependency>
 
 
@@ -57,6 +58,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
 		</dependency>
 	</dependencies>
 

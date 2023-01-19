@@ -1,4 +1,4 @@
-package com.example.demo.model
+package br.com.g6.orgfinanceiro.model
 
 import org.jetbrains.annotations.NotNull
 import javax.persistence.Entity

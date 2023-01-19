@@ -1,4 +1,4 @@
-package com.example.demo
+package br.com.g6.orgfinanceiro
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -8,5 +8,5 @@ class DemoApplication
 
 fun main(args: Array<String>) {
 	runApplication<DemoApplication>(*args)
-	val jdbcUrl = "jdbc:mysql://localhost/organizador_financeiro?createDatabaseIfNotExist=true"
+
 }

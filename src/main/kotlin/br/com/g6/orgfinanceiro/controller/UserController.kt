@@ -1,10 +1,8 @@
-package com.example.demo.controller
+package br.com.g6.orgfinanceiro.controller
 
-import com.example.demo.repositorory.UserRepository
-import com.example.demo.model.Users
-import org.springframework.http.HttpStatus
+import br.com.g6.orgfinanceiro.repository.UserRepository
+import br.com.g6.orgfinanceiro.model.Users
 import org.springframework.http.ResponseEntity
-import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 //porta de entrada da aplicação, onde chegam as requisições
