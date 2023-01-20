@@ -10,13 +10,12 @@ import javax.persistence.Id
     //ver quando usar dataclass - necessidade
 
     @Id @GeneratedValue //geração automática de id
-    val id: Long? = null,
+     val id: Long? = null,
     @NotNull  //ver anotaçãao @Size(min = 1, max = 100
     var name: String,
     @NotNull
     var email: String,
-    @NotNull
-    var password: CharArray){
+    @NotNull  var password: CharArray){
 
    //   fun ifPresent(email: String, function: () -> ResponseEntity<String>): ResponseEntity<Users> {
 //
@@ -60,3 +59,4 @@ import javax.persistence.Id
 //}
 //If the primary constructor does not have any annotations or visibility modifiers, the constructor keyword can be omitted:
 //dúvida: como fazer um construtor secundário ou uma herança para a classe Users chamada UsersLogin com atributos específicos?
+//visibilidade:

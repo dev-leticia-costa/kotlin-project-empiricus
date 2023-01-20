@@ -2,6 +2,7 @@ package br.com.g6.orgfinanceiro.controller
 
 import br.com.g6.orgfinanceiro.repository.UserRepository
 import br.com.g6.orgfinanceiro.model.Users
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,8 +19,11 @@ import java.util.*
 @RestController
 @RequestMapping("/user")
 //parametros do construtor: entender que a interface é um Bean e fazer a injeção de dependência
-class UserController(private val repository: UserRepository) {
+class UserController{
+    @Autowired
+    private lateinit var repository: UserRepository
 
+  //Autowired??
     //receber requisição como método http post
     @PostMapping("/signin")
     //quando tiver request tem que ter a response entity?
@@ -76,8 +80,8 @@ class UserController(private val repository: UserRepository) {
 //}
 
 
-    @PostMapping("/login")
-    fun login (@RequestBody user: Users) {}
+//    @PostMapping("/login")
+//    fun login (@RequestBody user: Users) {}
 
 
 //    @PostMapping("/logins")
@@ -112,7 +116,7 @@ class UserController(private val repository: UserRepository) {
 
                 ResponseEntity.ok("Usuário deletado com sucesso!")
                 (repository.delete(it))}
-        }
+        }//não retorna a resposta
 
 
 //    }.orElse(ResponseEntity.notFound().build())
