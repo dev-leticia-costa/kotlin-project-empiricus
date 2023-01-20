@@ -14,7 +14,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity?) {
         if (http != null) {
             http.csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/signup").permitAll()
+                .antMatchers(HttpMethod.POST,"/user/signup").permitAll()
                 .anyRequest().authenticated()
         }
         if (http != null) {

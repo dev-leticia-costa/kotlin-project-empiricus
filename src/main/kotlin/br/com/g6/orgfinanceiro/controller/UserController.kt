@@ -25,10 +25,13 @@ class UserController{
 
   //Autowired??
     //receber requisição como método http post
-    @PostMapping("/signin")
+//    @PostMapping("/signin")
+//    //quando tiver request tem que ter a response entity?
+//    fun create(@RequestBody user: Users) : ResponseEntity<Users> = ResponseEntity.ok(repository.save(user))
+
+    @PostMapping("/signup")
     //quando tiver request tem que ter a response entity?
     fun create(@RequestBody user: Users) : ResponseEntity<Users> = ResponseEntity.ok(repository.save(user))
-
 
 //    @PostMapping("/login")
 //    fun login (@RequestBody email: String, password: String) : Unit =
