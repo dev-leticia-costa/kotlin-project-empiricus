@@ -111,7 +111,7 @@ class UserController{
 
 
 
-    @DeleteMapping(value = ["/delete/{userId}"])
+    @DeleteMapping(value = ["/{userId}"])
     fun delete (@PathVariable userId: Long) : Unit =
         repository
             .findById(userId)
