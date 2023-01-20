@@ -15,7 +15,7 @@ import javax.persistence.Id
     var name: String,
     @NotNull
     var email: String,
-    @NotNull  var password: CharArray){
+    @NotNull  var password: String){
 
    //   fun ifPresent(email: String, function: () -> ResponseEntity<String>): ResponseEntity<Users> {
 //
@@ -37,6 +37,7 @@ import javax.persistence.Id
       return true
    }
 
+    /*
    override fun hashCode(): Int {
       var result = id?.hashCode() ?: 0
       result = 31 * result + name.hashCode()
@@ -45,6 +46,7 @@ import javax.persistence.Id
       return result
    }
 
+     */
     init{
         fun login(){}
     }
