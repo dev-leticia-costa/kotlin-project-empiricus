@@ -1,7 +1,7 @@
 package br.com.g6.orgfinanceiro.security
 
 import br.com.g6.orgfinanceiro.security.dto.JWTAuthenticationFilter
-
+import br.com.g6.orgfinanceiro.security.dto.JWTAuthorizationFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -55,7 +56,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
 //JTWAut herda de UsernamePasswordAuthenticationFilter
             //adicionando filtro de autenticação nas requisições
             http.addFilter(JWTAuthenticationFilter(authenticationManager(), jwtUtil = jwtUtil))
-         //   http.addFilter(JWTAuthorizationFilter(authenticationManager(), jwtUtil = jwtUtil, userDetailService = userDetailsService))
+           http.addFilter(JWTAuthorizationFilter(authenticationManager(), jwtUtil = jwtUtil, userDetailService = userDetailsService))
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             //desabilita a autenticação por sessao
             //
@@ -69,12 +70,12 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
 //    }
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder? {
+    fun bCryptPasswordEncoder(): BCryptPasswordEncoder {
         return BCryptPasswordEncoder()
     }
     //criptografia da senha
     override fun configure(auth: AuthenticationManagerBuilder) {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder())
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder())
     }
 
 }

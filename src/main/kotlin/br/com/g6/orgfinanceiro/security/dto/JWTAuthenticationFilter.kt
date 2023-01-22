@@ -44,7 +44,7 @@ class JWTAuthenticationFilter: UsernamePasswordAuthenticationFilter {
         val username = (authResult.principal as UserDetailsImpl).username
         val token = jwtUtil.generateToken(username)
 
-        response.addHeader("Autorização:", "$token")
+        response.addHeader("Autorização:", token)
     }
 //O attemptAuthentication recebe na Request as credenciais do usuário e o autentica um UserDetails .
 // O successfulAuthentication por sua vez, gera o Token e devolve no header para o usuário começar a utilizá-lo

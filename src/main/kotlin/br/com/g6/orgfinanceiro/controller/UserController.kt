@@ -7,6 +7,8 @@ import br.com.g6.orgfinanceiro.model.User
 import br.com.g6.orgfinanceiro.services.UsersService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.net.URI
 import java.util.*
 
 //porta de entrada da aplicação, onde chegam as requisições
@@ -29,10 +32,25 @@ class UserController{
     @Autowired
    private lateinit var service: UsersService
 
+    @Autowired(required=true)
+    private lateinit var bCryptPasswordEncoder: BCryptPasswordEncoder
 
-    @PostMapping("/signup")
-    fun create(@RequestBody user: User) : ResponseEntity<User> {
-        return ResponseEntity.ok(service.save(user))}
+//    @PostMapping("/signup")
+//    fun save(@RequestBody user: User): ResponseEntity<User> {
+//         user.password = bCryptPasswordEncoder.encode(user.password)
+//        return ResponseEntity.ok(repository.save(user))
+//    }
+
+    @PostMapping ("/signup")
+    fun signup(@RequestBody user: User): ResponseEntity<User> {
+        val userCreated = service.create(user)
+        return ResponseEntity.created(URI("")).body(userCreated)
+    }
+
+
+//    @PostMapping("/signup")
+//    fun create(@RequestBody user: User) : ResponseEntity<User> {
+//        return ResponseEntity.ok(service.save(user))}
 
     @GetMapping("/users")
     fun read() : Any{
