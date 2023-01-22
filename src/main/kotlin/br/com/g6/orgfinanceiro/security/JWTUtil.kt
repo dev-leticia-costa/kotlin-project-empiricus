@@ -11,7 +11,8 @@ class JWTUtil {
     @Value("\${jwt.secret}")
     private lateinit var secret: String
 
-    private val expiration: Long = 60000
+    private val expiration: Long = 3600000
+    //expiração: 1 hora
 
     fun generateToken(username: String): String {
         return Jwts.builder()
@@ -20,4 +21,6 @@ class JWTUtil {
             .signWith(SignatureAlgorithm.HS512, secret.toByteArray())
             .compact()
     }
+    //"Dado um username, tempo de expiração e segredo da aplicação,
+// //ele gera um Json Web Token, assinando com o secret e um algoritmo de criptografia."
 }

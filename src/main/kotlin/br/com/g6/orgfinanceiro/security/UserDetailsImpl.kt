@@ -1,10 +1,11 @@
 package br.com.g6.orgfinanceiro.security
 
-import br.com.g6.orgfinanceiro.model.Users
+import br.com.g6.orgfinanceiro.model.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-class UserDetailsImpl(private val user : Users) : UserDetails {
+//
+class UserDetailsImpl(private val user : User) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return mutableListOf()
     }

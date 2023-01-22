@@ -1,7 +1,10 @@
 package br.com.g6.orgfinanceiro.controller
 
+
+
 import br.com.g6.orgfinanceiro.repository.UserRepository
-import br.com.g6.orgfinanceiro.model.Users
+import br.com.g6.orgfinanceiro.model.User
+import br.com.g6.orgfinanceiro.services.UsersService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -16,22 +19,62 @@ import java.util.*
 
 //porta de entrada da aplicação, onde chegam as requisições
 //anotações e recursos
+//parametros do construtor/atributos: Beans e injeção de dependência
 @RestController
 @RequestMapping("/user")
-//parametros do construtor: entender que a interface é um Bean e fazer a injeção de dependência
 class UserController{
     @Autowired
     private lateinit var repository: UserRepository
 
-  //Autowired??
-    //receber requisição como método http post
-//    @PostMapping("/signin")
-//    //quando tiver request tem que ter a response entity?
-//    fun create(@RequestBody user: Users) : ResponseEntity<Users> = ResponseEntity.ok(repository.save(user))
+    @Autowired
+   private lateinit var service: UsersService
+
 
     @PostMapping("/signup")
-    //quando tiver request tem que ter a response entity?
-    fun create(@RequestBody user: Users) : ResponseEntity<Users> = ResponseEntity.ok(repository.save(user))
+    fun create(@RequestBody user: User) : ResponseEntity<User> {
+        return ResponseEntity.ok(service.save(user))}
+
+    @GetMapping("/users")
+    fun read() : Any{
+       if(service.findUsers().isNullOrEmpty()){
+         return ResponseEntity.notFound()
+       }
+    return ResponseEntity.ok(service.findUsers()!!)}
+
+
+
+
+
+
+
+    @GetMapping(value = ["/{userId}"])
+    fun getById(@PathVariable userId: Long) : ResponseEntity<User?> =
+        repository.findById(userId).map {
+            ResponseEntity.ok(it) // ponteiro/this
+        }.orElse(ResponseEntity.notFound().build())
+
+    @PutMapping(value = ["/{userId}"])
+    fun update (@PathVariable userId: Long, @RequestBody user: User) : ResponseEntity<User> {
+        //ver se o usuário existe - se sim, coloca o retorna na variável
+        val userUpdateOptional = repository.findById(userId) //or if( !userUpdateOtiona.isPresent)
+        val userUpdateSave = userUpdateOptional
+            .orElseThrow { RuntimeException("User $userId not found!")}
+            .copy(name = user.name, email = user.email, password = user.password)
+        return ResponseEntity.ok(repository.save(userUpdateSave))
+
+    }
+//            repository.userUpdate(it)
+    @DeleteMapping(value = ["/{userId}"])
+    fun delete (@PathVariable userId: Long) : Unit =
+        repository
+            .findById(userId)
+            .ifPresent{ ResponseEntity.ok("Usuário deletado com sucesso!")
+                (repository.delete(it))}
+    }//não retorna a resposta
+
+
+//    @Autowired
+//    private lateinit var bCryptPasswordEncoder: BCryptPasswordEncoder
 
 //    @PostMapping("/login")
 //    fun login (@RequestBody email: String, password: String) : Unit =
@@ -66,61 +109,10 @@ class UserController{
 
 
     //retorna uma response entity com uma lista de accounts
-    @GetMapping("/users")
-    fun read() : ResponseEntity<MutableList<Users>> = ResponseEntity.ok(repository.findAll())
-
-
-    @GetMapping(value = ["/{userId}"])
-    fun getById(@PathVariable userId: Long) : ResponseEntity<Users?> =
-        repository.findById(userId).map {
-            ResponseEntity.ok(it) // ponteiro/this
-        }.orElse(ResponseEntity.notFound().build())
-//
+  //
 //    @GetMapping("/{slug}")
 //    fun findOne(@PathVariable slug: String) =
 //        repository.findBySlug(slug) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "This article does not exist")
-//
-//}
-
-
-//    @PostMapping("/login")
-//    fun login (@RequestBody user: Users) {}
-
-
-//    @PostMapping("/logins")
-//    fun authentication(@RequestBody email: String, password: String): ResponseEntity<Void> {
-//
-//        repository.findByEmail(email).map { resp: Users -> ResponseEntity.ok(resp) }
-//            .orElse(
-//                ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-//                    .build()
-//            )
-//    }
-
-    @PutMapping(value = ["/{userId}"])
-    fun update (@PathVariable userId: Long, @RequestBody user: Users) : ResponseEntity<Users> {
-        //ver se o usuário existe - se sim, coloca o retorna na variável
-        val userUpdateOptional = repository.findById(userId) //or if( !userUpdateOtiona.isPresent)
-        val userUpdateSave = userUpdateOptional
-            .orElseThrow { RuntimeException("User $userId not found!")}
-            .copy(name = user.name, email = user.email, password = user.password)
-        return ResponseEntity.ok(repository.save(userUpdateSave))
-
-        }
-//            repository.userUpdate(it)
-
-
-
-    @DeleteMapping(value = ["/{userId}"])
-    fun delete (@PathVariable userId: Long) : Unit =
-        repository
-            .findById(userId)
-            .ifPresent{
-
-                ResponseEntity.ok("Usuário deletado com sucesso!")
-                (repository.delete(it))}
-        }//não retorna a resposta
-
 
 //    }.orElse(ResponseEntity.notFound().build())
     //findById -> retorna um Optional - get para extrair o dado
