@@ -16,6 +16,7 @@ class UserDetailsServiceImpl : UserDetailsService {
     private lateinit var userRepository: UserRepository
 
 
+    //--localiza o usuário no BD com base no email, retorna um usuário e suas permissoes  ----
     override fun loadUserByUsername(email: String?): UserDetails {
         val user = userRepository.findByEmail(email) ?: throw UsernameNotFoundException(email)
 

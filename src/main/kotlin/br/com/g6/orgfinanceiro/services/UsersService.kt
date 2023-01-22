@@ -13,24 +13,6 @@ import org.springframework.stereotype.Service
  class UsersService  {
     @Autowired
     lateinit var userRepository: UserRepository
-
-//    @Autowired
-//    lateinit var bCryptPasswordEncoder: BCryptPasswordEncoder
-
-
-    fun save(user: User): User {
-    //    user.password = bCryptPasswordEncoder.encode(user.password)
-        return userRepository.save(user)
-    }
-
-    fun findUsers() : MutableList<User>? {
-        //var mutableList : MutableList<User?> = userRepository.findAll()
-        //return mutableList
-        return  userRepository.findAll()
-
-
-
-    }
     @Autowired
     private lateinit var bCryptPasswordEncoder: BCryptPasswordEncoder
 
@@ -38,6 +20,15 @@ import org.springframework.stereotype.Service
         user.password = bCryptPasswordEncoder.encode(user.password)
         return userRepository.save(user)
     }
+
+
+    fun findUsers() : MutableList<User>? {
+        //var mutableList : MutableList<User?> = userRepository.findAll()
+        //return mutableList
+        return  userRepository.findAll()
+    }
+
+
 
     fun myself(): String? {
         return userRepository.findByEmail(getCurrentUserEmail())?.name

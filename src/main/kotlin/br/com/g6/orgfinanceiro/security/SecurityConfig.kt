@@ -39,10 +39,10 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
 
             http.csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/user/signup").permitAll()
-//                .antMatchers(HttpMethod.GET,"/user").permitAll()
-//                .antMatchers(HttpMethod.GET,"/user/{userId}").permitAll()
-//                .antMatchers(HttpMethod.DELETE,"/user/{userId}").permitAll()
-//                .antMatchers(HttpMethod.PUT,"/user/{userId}").permitAll()
+                .antMatchers(HttpMethod.GET,"/user").permitAll()
+                .antMatchers(HttpMethod.GET,"/user/{userId}").permitAll()
+                .antMatchers(HttpMethod.DELETE,"/user/{userId}").permitAll()
+                .antMatchers(HttpMethod.PUT,"/user/{userId}").permitAll()
                 .anyRequest().authenticated()
 
         }

@@ -9,6 +9,7 @@ import java.util.*
 
 @Component
 class JWTUtil {
+
     @Value("\${jwt.secret}")
     private lateinit var secret: String
 
