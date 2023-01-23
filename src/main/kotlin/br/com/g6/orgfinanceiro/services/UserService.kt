@@ -7,8 +7,10 @@ import org.apache.commons.codec.binary.Base64
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.stereotype.Service
 import java.nio.charset.Charset
 
+@Service
 class UserService {
 
     @Autowired
@@ -22,26 +24,11 @@ class UserService {
         return userRepository.save(user)
     }
 
-    /*
-    public Optional<UserLogin> logar(Optional<UserLogin> userLogin) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        Optional<User> user = userRepository.findByUserEmail(userLogin.get().getUserName());
 
-        if(user.isPresent()){
-            if(encoder.matches(userLogin.get().getPassword(), user.get().getUserPassword())){
-                String auth = userLogin.get().getUserName() + ":" + userLogin.get().getPassword();
-                byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")));
-                String authHeader = "Basic " + new String(encodedAuth);
-                userLogin.get().setToken(authHeader);
-                userLogin.get().setName(user.get().getUserName());
+//    public Optional<UserLogin> logar(Optional<UserLogin> userLogin) {
+//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//        Optional<User> user = userRepository.findByUserEmail(userLogin.get().getUserName());
 
-                return userLogin;
-            }
-        }
-
-        return null;
-    }
-     */
 
     fun login(usersLogin: UsersLogin?): UsersLogin? {
         var user : Users? = userRepository.findByEmail(usersLogin?.email)
@@ -50,8 +37,12 @@ class UserService {
                 var auth: String = usersLogin.email + ":" + usersLogin.password
                 var encodeAuth: ByteArray = Base64.encodeBase64(auth.toByteArray(Charset.forName("US-ASCII")))
                 var authHeader: String = "Basic " + String(encodeAuth)
-                usersLogin.token = authHeader
+                usersLogin
+                usersLogin.name = user.name
                 usersLogin.email = user.email
+                usersLogin.password = user.password
+                usersLogin.token = authHeader
+
 
                 return usersLogin
 

@@ -7,6 +7,7 @@ import br.com.g6.orgfinanceiro.model.UsersLogin
 import br.com.g6.orgfinanceiro.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -28,26 +29,23 @@ class UserController(private val repository: UserRepository) {
     @Autowired
     private lateinit var userService : UserService;
 
+//    @Autowired
+//    private lateinit var usersLogin: UsersLogin
+
+
     //receber requisição como método http post
     @PostMapping("/signup")
     //quando tiver request tem que ter a response entity?
     fun create(@RequestBody @Valid usersDTO: UsersDTO) : ResponseEntity<Users> {
         var user : Users = Users(null, usersDTO.name, usersDTO.email, usersDTO.password)
 
-        ResponseEntity.ok(userService.save(user))
+        return ResponseEntity.ok(userService.save(user))
     }
-/*
-         @PostMapping("/login")
-            public ResponseEntity<UserLogin> authentication(@RequestBody Optional<UserLogin> userLogin){
-                return userService.logar(userLogin)
-                        .map(resp -> ResponseEntity.ok(resp))
-                        .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                                .build());
-    }
- */
+
     @PostMapping("/login")
-    fun authentication (@RequestBody usersLogin: UsersLogin?) : ResponseEntity<UsersLogin> {
-        return userService.login(UsersLogin)
+    fun authentication (@RequestBody user: UsersLogin?) : ResponseEntity<UsersLogin> {
+   var user = userService.login(user)
+        return  ResponseEntity.ok(user!!)
 
 
     }
@@ -91,9 +89,3 @@ class UserController(private val repository: UserRepository) {
                 (repository.delete(it))}
         }
 
-
-//    }.orElse(ResponseEntity.notFound().build())
-    //findById -> retorna um Optional - get para extrair o dado
-//retornar uma mensagem para o usuário
-
-//late init para o user security

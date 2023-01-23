@@ -1,14 +1,16 @@
 package br.com.g6.orgfinanceiro.services
 
+import br.com.g6.orgfinanceiro.model.Users
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-class UserDetailsImpl : UserDetails{
+class UserDetailsImpl(user: Users?) : UserDetails{
 //    @Serial
     private val serialVersionUID = 1L;
 
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        TODO("Not yet implemented")
+    //nome e senha
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority>? {
+        return null;
     }
 
     override fun getPassword(): String {

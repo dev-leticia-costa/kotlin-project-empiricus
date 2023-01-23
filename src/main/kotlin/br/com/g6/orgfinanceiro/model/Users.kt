@@ -38,13 +38,13 @@ import javax.persistence.Id
       return true
    }
 
-   override fun hashCode(): Int {
-      var result = id?.hashCode() ?: 0
-      result = 31 * result + name.hashCode()
-      result = 31 * result + email.hashCode()
-      result = 31 * result + password.contentHashCode()
-      return result
-   }
+//   override fun hashCode(): Int {
+//      var result = id?.hashCode() ?: 0
+//      result = 31 * result + name.hashCode()
+//      result = 31 * result + email.hashCode()
+//      result = 31 * result + password.contentHashCode()
+//      return result
+//   }
 
     init{
         fun login(){}
