@@ -39,7 +39,11 @@ class SecurityConfig() {
         http.authorizeRequests()
             .antMatchers(HttpMethod.POST, "/user/login").permitAll()
             .antMatchers(HttpMethod.POST, "/user/signup").permitAll()
-            .anyRequest().authenticated()
+            .antMatchers(HttpMethod.POST, "/user/users").permitAll()
+            .antMatchers(HttpMethod.GET, "/user/{userId}").permitAll()
+            .antMatchers(HttpMethod.PUT, "/user/{userId}").permitAll()
+            .antMatchers(HttpMethod.DELETE, "/user/{userId}").permitAll()
+//            .anyRequest().authenticated()
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
 

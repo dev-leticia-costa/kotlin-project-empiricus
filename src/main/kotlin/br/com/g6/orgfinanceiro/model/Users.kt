@@ -16,46 +16,24 @@ import javax.persistence.Id
     @NotNull
     var email: String,
     @NotNull
-    var password: String){
+    var password: String) {
 
-   //   fun ifPresent(email: String, function: () -> ResponseEntity<String>): ResponseEntity<Users> {
-//
-//   }
-//init{
-//   require()
-//}
-   override fun equals(other: Any?): Boolean {
-      if (this === other) return true
-      if (javaClass != other?.javaClass) return false
 
-      other as Users
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
 
-      if (id != other.id) return false
-      if (name != other.name) return false
-      if (email != other.email) return false
-      if (!password.contentEquals(other.password)) return false
+        other as Users
 
-      return true
-   }
+        if (id != other.id) return false
+        if (name != other.name) return false
+        if (email != other.email) return false
+        if (!password.contentEquals(other.password)) return false
 
-//   override fun hashCode(): Int {
-//      var result = id?.hashCode() ?: 0
-//      result = 31 * result + name.hashCode()
-//      result = 31 * result + email.hashCode()
-//      result = 31 * result + password.contentHashCode()
-//      return result
-//   }
-
-    init{
-        fun login(){}
+        return true
     }
+
 }
-////    var token: String)
-//    constructor ( email: String, password: String){
-//
-//        this.email = email
-//        this.password = password
-//    }
 //data classe gera alguns atributos automáticos como getters and setters, construtores e outros
 //}
 //If the primary constructor does not have any annotations or visibility modifiers, the constructor keyword can be omitted:

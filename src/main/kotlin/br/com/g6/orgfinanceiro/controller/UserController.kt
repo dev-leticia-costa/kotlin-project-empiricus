@@ -42,6 +42,7 @@ class UserController(private val repository: UserRepository) {
         return ResponseEntity.ok(userService.save(user))
     }
 
+    //--ERRO: a pessoa só consegue se logar uma evz
     @PostMapping("/login")
     fun authentication (@RequestBody user: UsersLogin?) : ResponseEntity<UsersLogin> {
    var user = userService.login(user)
@@ -61,9 +62,8 @@ class UserController(private val repository: UserRepository) {
         repository.findById(userId).map {
             ResponseEntity.ok(it) // ponteiro/this
         }.orElse(ResponseEntity.notFound().build())
-
-
-
+    //RETORNAR RESPOSTA PARA O USUÁRIO NÃO ENCONTRADO OU NÃO PERMITIDO
+    
 
     @PutMapping(value = ["/{userId}"])
     fun update (@PathVariable userId: Long, @RequestBody user: Users) : ResponseEntity<Users> {
@@ -79,7 +79,7 @@ class UserController(private val repository: UserRepository) {
 
 
 
-    @DeleteMapping(value = ["/delete/{userId}"])
+    @DeleteMapping(value = ["/{userId}"])
     fun delete (@PathVariable userId: Long) : Unit =
         repository
             .findById(userId)
