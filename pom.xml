@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.g6</groupId>
-	<artifactId>organizadorfinanceir</artifactId>
+	<artifactId>organizador-financeiro</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>organizadorfinanceiro</name>
 	<description>Projeto Integrador - Organizador Financeiro</description>

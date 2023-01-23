@@ -6,17 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
-
-
+import org.springframework.security.web.SecurityFilterChain
 
 
 @Configuration
@@ -31,18 +30,19 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     //--método configurar para tratar requisições: permite todas as rotas passadas
     // como parâmetro no antMatchers
-    override fun configure(http: HttpSecurity?) {
+    override fun configure(http: HttpSecurity?)  {
         if (http != null) {
 //----CRFS: é um token que é utilizado em aplicações MVC  pelo Spring para cada HTTP request
             //CSRF é habilitado pelo Security e desabilitando, pode-se autorizar as seguintes requisições (permitAll).
             // --As demais devem ser autenticadas.
 
-            http.csrf().disable().authorizeRequests()
+            http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/user/signup").permitAll()
-                .antMatchers(HttpMethod.GET,"/user").permitAll()
-                .antMatchers(HttpMethod.GET,"/user/{userId}").permitAll()
-                .antMatchers(HttpMethod.DELETE,"/user/{userId}").permitAll()
-                .antMatchers(HttpMethod.PUT,"/user/{userId}").permitAll()
+                .antMatchers(HttpMethod.POST,"/user/signin").permitAll()
+//                .antMatchers(HttpMethod.GET,"/user").permitAll()
+//                .antMatchers(HttpMethod.GET,"/user/{userId}").permitAll()
+//                .antMatchers(HttpMethod.DELETE,"/user/{userId}").permitAll()
+//                .antMatchers(HttpMethod.PUT,"/user/{userId}").permitAll()
                 .anyRequest().authenticated()
 
         }
@@ -76,6 +76,17 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
     //criptografia da senha
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder())
+    }
+
+    //  @Bean
+    //  @Override
+    //  public AuthenticationManager authenticationManagerBean() throws Exception {
+    //    return super.authenticationManagerBean();
+    //  }
+    @Bean
+    @Throws(Exception::class)
+    fun authenticationManager(authConfig: AuthenticationConfiguration): AuthenticationManager? {
+        return authConfig.authenticationManager
     }
 
 }

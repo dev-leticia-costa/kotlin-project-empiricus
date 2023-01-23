@@ -1,13 +1,20 @@
 package br.com.g6.orgfinanceiro.security
 
+import br.com.g6.orgfinanceiro.model.ERole
 import br.com.g6.orgfinanceiro.model.User
+import org.springframework.context.annotation.Bean
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-//
+
 class UserDetailsImpl(private val user : User) : UserDetails {
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return mutableListOf()
+
+////8888
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority?> {
+    val authorities = ArrayList<SimpleGrantedAuthority>()
+    authorities.add(SimpleGrantedAuthority(ERole.ROLE_USER.name))
+    return authorities
     }
 
     override fun isEnabled(): Boolean {
