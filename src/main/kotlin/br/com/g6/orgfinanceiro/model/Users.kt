@@ -16,7 +16,7 @@ import javax.persistence.Id
     @NotNull
     var email: String,
     @NotNull
-    var password: CharArray){
+    var password: String){
 
    //   fun ifPresent(email: String, function: () -> ResponseEntity<String>): ResponseEntity<Users> {
 //

@@ -1,7 +1,11 @@
 package br.com.g6.orgfinanceiro.controller
 
+import br.com.g6.orgfinanceiro.dto.UsersDTO
 import br.com.g6.orgfinanceiro.repository.UserRepository
 import br.com.g6.orgfinanceiro.model.Users
+import br.com.g6.orgfinanceiro.model.UsersLogin
+import br.com.g6.orgfinanceiro.services.UserService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
+import javax.validation.Valid
 
 //porta de entrada da aplicação, onde chegam as requisições
 //anotações e recursos
@@ -20,11 +25,32 @@ import java.util.*
 //parametros do construtor: entender que a interface é um Bean e fazer a injeção de dependência
 class UserController(private val repository: UserRepository) {
 
-    //receber requisição como método http post
-    @PostMapping("/signin")
-    //quando tiver request tem que ter a response entity?
-    fun create(@RequestBody user: Users) : ResponseEntity<Users> = ResponseEntity.ok(repository.save(user))
+    @Autowired
+    private lateinit var userService : UserService;
 
+    //receber requisição como método http post
+    @PostMapping("/signup")
+    //quando tiver request tem que ter a response entity?
+    fun create(@RequestBody @Valid usersDTO: UsersDTO) : ResponseEntity<Users> {
+        var user : Users = Users(null, usersDTO.name, usersDTO.email, usersDTO.password)
+
+        ResponseEntity.ok(userService.save(user))
+    }
+/*
+         @PostMapping("/login")
+            public ResponseEntity<UserLogin> authentication(@RequestBody Optional<UserLogin> userLogin){
+                return userService.logar(userLogin)
+                        .map(resp -> ResponseEntity.ok(resp))
+                        .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                .build());
+    }
+ */
+    @PostMapping("/login")
+    fun authentication (@RequestBody usersLogin: UsersLogin?) : ResponseEntity<UsersLogin> {
+        return userService.login(UsersLogin)
+
+
+    }
 
 
     //retorna uma response entity com uma lista de accounts
@@ -38,10 +64,6 @@ class UserController(private val repository: UserRepository) {
             ResponseEntity.ok(it) // ponteiro/this
         }.orElse(ResponseEntity.notFound().build())
 
-
-
-    @PostMapping("/login")
-    fun login (@RequestBody user: Users) {}
 
 
 
