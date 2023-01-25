@@ -4,22 +4,23 @@ import com.fasterxml.jackson.annotation.JsonFormat
 import java.util.*
 
 
-class MovementDto {
+data class MovementDto (
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
+    val dueDateIni: Date? = null,
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
+    val dueDateEnd: Date? = null,
+
+    val typeMovement: String? = null,
+    val descriptionMovement: String? = null,
+    val idUser: Long? = null,
+    val valueMovementIni: Double? = null,
+    var valueMovementEnd: Double? = null,
+    val wasPaid: Boolean? = null,
+    val idMovement: Long? = null
+){
 /*
-    private var typeMovement: String? = null
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
-    private var periodoDe: Date? = null
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
-    private var periodoAte: Date? = null
-
-    private var description: String? = null
-    private var idUsuario: Long? = null
-    private var valueMovementIni: Double? = null
-    private var valueMovementEnd: Double? = null
-    private var wasPaid: Boolean? = null
-    private var idMovement: Long? = null
 
     fun getTypeMovement(): String? {
         return typeMovement
