@@ -45,7 +45,7 @@ class UserController(private val repository: UserRepository) {
     //--ERRO: a pessoa só consegue se logar uma evz
     @PostMapping("/login")
     fun authentication (@RequestBody user: UsersLogin?) : ResponseEntity<UsersLogin> {
-   var user = userService.login(user)
+       var user = userService.login(user)
         return  ResponseEntity.ok(user!!)
 
 

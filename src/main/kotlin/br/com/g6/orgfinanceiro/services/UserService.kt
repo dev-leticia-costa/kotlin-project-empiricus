@@ -37,7 +37,7 @@ class UserService {
                 var auth: String = usersLogin.email + ":" + usersLogin.password
                 var encodeAuth: ByteArray = Base64.encodeBase64(auth.toByteArray(Charset.forName("US-ASCII")))
                 var authHeader: String = "Basic " + String(encodeAuth)
-                usersLogin
+  //              usersLogin
                 usersLogin.name = user.name
                 usersLogin.email = user.email
                 usersLogin.password = user.password

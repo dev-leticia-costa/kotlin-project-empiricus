@@ -14,27 +14,27 @@ class UserDetailsImpl(user: Users?) : UserDetails{
     }
 
     override fun getPassword(): String {
-        TODO("Not yet implemented")
+        return this.password
     }
 
     override fun getUsername(): String {
-        TODO("Not yet implemented")
+        return this.username
     }
 
     override fun isAccountNonExpired(): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun isAccountNonLocked(): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun isCredentialsNonExpired(): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun isEnabled(): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
 }
