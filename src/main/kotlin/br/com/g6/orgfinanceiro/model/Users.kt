@@ -1,6 +1,7 @@
 package br.com.g6.orgfinanceiro.model
 
 import org.jetbrains.annotations.NotNull
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -12,8 +13,10 @@ import javax.persistence.Id
     @Id @GeneratedValue //geração automática de id
     val id: Long? = null,
     @NotNull  //ver anotaçãao @Size(min = 1, max = 100
+    @Column(unique = true)
     var name: String,
     @NotNull
+    @Column(unique = true)
     var email: String,
     @NotNull
     var password: String) {

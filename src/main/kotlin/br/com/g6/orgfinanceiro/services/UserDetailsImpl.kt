@@ -4,9 +4,11 @@ import br.com.g6.orgfinanceiro.model.Users
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-class UserDetailsImpl(user: Users?) : UserDetails{
+class UserDetailsImpl(val user: Users?) : UserDetails{
 //    @Serial
     private val serialVersionUID = 1L;
+    private var password: String = user!!.password
+    private var username: String = user!!.name
 
     //nome e senha
     override fun getAuthorities(): MutableCollection<out GrantedAuthority>? {
@@ -14,11 +16,11 @@ class UserDetailsImpl(user: Users?) : UserDetails{
     }
 
     override fun getPassword(): String {
-        return this.password
+        return password
     }
 
     override fun getUsername(): String {
-        return this.username
+        return username
     }
 
     override fun isAccountNonExpired(): Boolean {

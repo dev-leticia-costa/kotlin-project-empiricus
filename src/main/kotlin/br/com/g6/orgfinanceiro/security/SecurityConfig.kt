@@ -6,6 +6,8 @@ import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -15,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain
 
 
 @Configuration
+@EnableWebSecurity
 class SecurityConfig() {
 
     @Bean
@@ -36,20 +39,21 @@ class SecurityConfig() {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().csrf().disable()
             .cors()
-        http.authorizeRequests()
+        http.httpBasic().and()
+            .authorizeRequests()
             .antMatchers(HttpMethod.POST, "/user/login").permitAll()
             .antMatchers(HttpMethod.POST, "/user/signup").permitAll()
-            .antMatchers(HttpMethod.POST, "/user/users").authenticated()
+            .antMatchers(HttpMethod.GET, "/user/users").authenticated()
             .antMatchers(HttpMethod.GET, "/user/{userId}").authenticated()
             .antMatchers(HttpMethod.PUT, "/user/{userId}").authenticated()
             .antMatchers(HttpMethod.DELETE, "/user/{userId}").authenticated()
-            .and().httpBasic()
 //            .anyRequest().authenticated()
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
 
         return http.build()
     }
+
 }
 
 //    @Bean
