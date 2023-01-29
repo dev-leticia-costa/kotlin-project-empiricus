@@ -5,8 +5,11 @@ import br.com.g6.orgfinanceiro.repository.UserRepository
 import br.com.g6.orgfinanceiro.model.Users
 import br.com.g6.orgfinanceiro.model.UsersLogin
 import br.com.g6.orgfinanceiro.services.UserService
+import br.com.g6.orgfinanceiro.util.Helper
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.lang.Nullable
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -37,9 +40,13 @@ class UserController(private val repository: UserRepository) {
     @PostMapping("/signup")
     //quando tiver request tem que ter a response entity?
     fun create(@RequestBody @Valid usersDTO: UsersDTO) : ResponseEntity<Users> {
-        var user : Users = Users(null, usersDTO.name, usersDTO.email, usersDTO.password)
 
-        return ResponseEntity.ok(userService.save(user))
+        if( !Helper.isEmailValid(usersDTO.email)){
+            ResponseEntity("E-mail inválido, por favor, insira um e-mail válido", HttpStatus.BAD_REQUEST)
+
+        }
+        var user : Users = Users(null, usersDTO.name, usersDTO.email, usersDTO.password)
+            return ResponseEntity.ok(userService.save(user))
     }
 
     //--ERRO: a pessoa só consegue se logar uma evz
