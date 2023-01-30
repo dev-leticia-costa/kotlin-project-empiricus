@@ -22,17 +22,12 @@ class MovementController {
         return repository.findAll(filterMovement)
     }
 
-    @PostMapping("/save")
+    @PostMapping()
     fun post(@Valid @RequestBody createMovement: Movement): Movement {
         return repository.save(createMovement)
     }
 
-    @GetMapping("/show/{idMovement}")
-    fun get(@PathVariable("idMovement") idMovement: Long):Movement {
-        return repository.findById(idMovement).orElseThrow { EntityNotFoundException() }
-    }
-
-    @PutMapping("/change/{idMovement}")
+    @PutMapping("/{idMovement}")
     fun put(@PathVariable("idMovement") idMovement: Long,@Valid @RequestBody newMovement: Movement):Movement {
         val updateMovement = repository.findById(idMovement).orElseThrow {EntityNotFoundException()}
 
@@ -47,13 +42,13 @@ class MovementController {
         return repository.save(updateMovement)
     }
 
-    @DeleteMapping("/delete/{idMovement}")
+    @DeleteMapping("/{idMovement}")
     fun delete(@PathVariable("idMovement") idMovement: Long){
         val deleteMovement = repository.findById(idMovement).orElseThrow {EntityNotFoundException()}
         repository.delete(deleteMovement)
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/all")
     fun deleteAll() {
         return repository.deleteAll()
     }
