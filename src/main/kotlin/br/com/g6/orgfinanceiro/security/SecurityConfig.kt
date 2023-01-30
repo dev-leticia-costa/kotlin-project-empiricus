@@ -47,6 +47,10 @@ class SecurityConfig() {
             .antMatchers(HttpMethod.GET, "/user/{userId}").authenticated()
             .antMatchers(HttpMethod.PUT, "/user/{userId}").authenticated()
             .antMatchers(HttpMethod.DELETE, "/user/{userId}").authenticated()
+            .antMatchers(HttpMethod.GET, "/movement/**").authenticated()
+            .antMatchers(HttpMethod.POST, "/movement/**").authenticated()
+            .antMatchers(HttpMethod.PUT, "/movement/**").authenticated()
+            .antMatchers(HttpMethod.DELETE, "/movement/**").authenticated()
 //            .anyRequest().authenticated()
 //        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
