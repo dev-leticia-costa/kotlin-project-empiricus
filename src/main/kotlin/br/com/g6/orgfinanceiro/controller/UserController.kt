@@ -4,10 +4,13 @@ import br.com.g6.orgfinanceiro.dto.UsersDTO
 import br.com.g6.orgfinanceiro.repository.UserRepository
 import br.com.g6.orgfinanceiro.model.Users
 import br.com.g6.orgfinanceiro.model.UsersLogin
+import br.com.g6.orgfinanceiro.services.SpringMailService
 import br.com.g6.orgfinanceiro.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -28,6 +31,12 @@ class UserController(private val repository: UserRepository) {
 
     @Autowired
     private lateinit var userService : UserService;
+
+    @Autowired
+    private lateinit var emailService: SpringMailService;
+
+    @Autowired
+    private lateinit var encoder: BCryptPasswordEncoder;
 
 //    @Autowired
 //    private lateinit var usersLogin: UsersLogin
@@ -71,7 +80,14 @@ class UserController(private val repository: UserRepository) {
         val userUpdateOptional = repository.findById(userId) //or if( !userUpdateOtiona.isPresent)
         val userUpdateSave = userUpdateOptional
             .orElseThrow { RuntimeException("User $userId not found!")}
-            .copy(name = user.name, email = user.email, password = user.password)
+            .copy(name = user.name, email = user.email, password = encoder.encode(user.password))
+            .also {
+                if (userUpdateOptional.get().email != user.email){
+                    emailService.sendEmail(user.email,
+                        "Email alterado.",
+                        "${user.name}, seu email foi alterado com sucesso!")
+                }
+            }
         return ResponseEntity.ok(repository.save(userUpdateSave))
 
         }

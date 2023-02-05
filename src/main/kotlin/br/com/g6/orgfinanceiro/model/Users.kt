@@ -13,7 +13,7 @@ import javax.persistence.Id
     @Id @GeneratedValue //geração automática de id
     val id: Long? = null,
     @NotNull  //ver anotaçãao @Size(min = 1, max = 100
-    @Column(unique = true)
+ //   @Column(unique = true)
     var name: String,
     @NotNull
     @Column(unique = true)

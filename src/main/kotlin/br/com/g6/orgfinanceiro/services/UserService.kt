@@ -3,6 +3,7 @@ package br.com.g6.orgfinanceiro.services
 import br.com.g6.orgfinanceiro.model.Users
 import br.com.g6.orgfinanceiro.model.UsersLogin
 import br.com.g6.orgfinanceiro.repository.UserRepository
+import com.sun.mail.smtp.SMTPSendFailedException
 import org.apache.commons.codec.binary.Base64
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -19,8 +20,26 @@ class UserService {
     @Autowired
     private lateinit var enconder : BCryptPasswordEncoder
 
+    @Autowired
+    private lateinit var emailService: SpringMailService;
+
     fun save(user: Users): Users {
         user.password = enconder.encode(user.password)
+        var erroEmail: String = ""
+        try {
+            if(userRepository.findByEmail(user.email) == null){
+                var body: String = "Olá ${user.name}! Seja bem-vindo(a) ao Meu Boleto Pago.\n" +
+                        "O controle das suas finanças na palma da sua mão."
+                emailService.sendEmail(
+                    user.email,
+                    "Bem-vindo(a) ao Meu Boleto Pago!",
+                    body
+                )
+            }
+        } catch (ex: SMTPSendFailedException){
+            erroEmail = "\nNão foi possível confirmar seu email. Por favor, verifique o seu email e atualize seus dados."
+            ex.message + erroEmail
+        }
         return userRepository.save(user)
     }
 
