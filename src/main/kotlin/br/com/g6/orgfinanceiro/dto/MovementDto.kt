@@ -1,23 +1,24 @@
 package br.com.g6.orgfinanceiro.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import java.time.LocalDate
 import java.util.*
 
 
 data class MovementDto (
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
-    val dueDateIni: Date? = null,
+    var dueDateIni: LocalDate? = null,
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
-    val dueDateEnd: Date? = null,
+    var dueDateEnd: LocalDate? = null,
 
-    val typeMovement: String? = null,
-    val descriptionMovement: String? = null,
-    val idUser: Long? = null,
-    val valueMovementIni: Double? = null,
+    var typeMovement: Int? = null,
+    var descriptionMovement: String? = null,
+    var idUser: Long? = null,
+    var valueMovementIni: Double? = null,
     var valueMovementEnd: Double? = null,
-    val wasPaid: Boolean? = null,
-    val idMovement: Long? = null
+    var wasPaid: Boolean? = null,
+    var idMovement: Long? = null
 )
 
