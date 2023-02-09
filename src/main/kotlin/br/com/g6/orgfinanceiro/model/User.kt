@@ -1,37 +1,27 @@
 package br.com.g6.orgfinanceiro.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.jetbrains.annotations.NotNull
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
-@Entity(name = "usuario")//nomear tabela como usuário
+@Entity(name = "users")//nomear tabela como usuário
  data class User (
     //ver quando usar dataclass - necessidade
 
     @Id @GeneratedValue //geração automática de id (strategy = GenerationType.IDENTITY)
-    //@JsonIgnore
-     val id: Long? = null,
-    @NotNull  //ver anotaçãao @Size(min = 1, max = 100
-    var name: String,
-    @NotNull
-    var email: String,
-    @NotNull
-    var password: String){
+    @JsonIgnore
+     val id: Long? = 0,
+ //ver anotaçãao @Size(min = 1, max = 100
+    var name: String = "",
+
+    var email: String = "",
+    val fullname: String = "",
+
+    var password: String)
     //---MÉTODOS DATA CLASS----
-    override fun equals(other: Any?): Boolean {
-      if (this === other) return true
-      if (javaClass != other?.javaClass) return false
 
-      other as User
-
-      if (id != other.id) return false
-      if (name != other.name) return false
-      if (email != other.email) return false
-      if (!password.contentEquals(other.password)) return false
-
-      return true
-   }
 
     /*
    override fun hashCode(): Int {
@@ -43,10 +33,7 @@ import javax.persistence.Id
    }
 
      */
-    init{
-        fun login(){}
-    }
-}
+
 //   fun ifPresent(email: String, function: () -> ResponseEntity<String>): ResponseEntity<Users> {
 //
 //   }
@@ -60,7 +47,6 @@ import javax.persistence.Id
 //        this.password = password
 //    }
 //data classe gera alguns atributos automáticos como getters and setters, construtores e outros
-//}
 //If the primary constructor does not have any annotations or visibility modifiers, the constructor keyword can be omitted:
 //dúvida: como fazer um construtor secundário ou uma herança para a classe Users  UsersLogin com atributos específicos?
 //visibilidade:

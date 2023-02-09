@@ -1,7 +1,9 @@
 package br.com.g6.orgfinanceiro.security.dto
 
 import br.com.g6.orgfinanceiro.security.JWTUtil
-import br.com.g6.orgfinanceiro.security.UserDetailsImpl
+import br.com.g6.orgfinanceiro.model.UserDetailsImpl
+import br.com.g6.orgfinanceiro.util.authorization
+import br.com.g6.orgfinanceiro.util.bearer
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -14,30 +16,28 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
+//filter para autenticação
 class JWTAuthenticationFilter: UsernamePasswordAuthenticationFilter {
+//UsernamePasswordAuthenticationFilter, que já possui um authenticationManager na classe mãe.
 
-    @Autowired
-    private lateinit var authentication: Authentication
 
     @Autowired
     private var jwtUtil: JWTUtil
 
 
-
+//ver se preciso deste construtor
     constructor(authenticationManager: AuthenticationManager, jwtUtil: JWTUtil) : super() {
         this.authenticationManager = authenticationManager
         this.jwtUtil = jwtUtil
     }
-
+    //refatorar jwt request com credentials
     // --Recebe na Request as credenciais do usuário e o autentica um UserDetails .
-    override fun attemptAuthentication(request: HttpServletRequest, response: HttpServletResponse): Authentication {
+    override fun attemptAuthentication(request: HttpServletRequest, response: HttpServletResponse): Authentication? {
         try {
             //--inputStream : leitura do input
-            // -- ObjectMapper : serializar um objeto (converter em formato que possa ser armazenado ou transferido.
+            // -- ObjectMapper : serializar um objeto - no caso request - e converte em formato que possa ser armazenado ou transferido.
             //ver sintaxe linha 32
             val (email, password) = ObjectMapper().readValue(request.inputStream, Credentials::class.java)
-
-
             val token = UsernamePasswordAuthenticationToken(email, password)
 
             return authenticationManager.authenticate(token)
@@ -47,9 +47,9 @@ class JWTAuthenticationFilter: UsernamePasswordAuthenticationFilter {
     }
 
     override fun successfulAuthentication(request: HttpServletRequest?, response: HttpServletResponse, chain: FilterChain?, authResult: Authentication) {
-        val username = authResult.principal as UserDetailsImpl
-        val token = jwtUtil.generateToken(authentication)
-        response.addHeader("Authorization", "Bearer $token")
+        val username = (authResult.principal as UserDetailsImpl).username
+        val token = jwtUtil.generateToken(username)
+        response.addHeader( authorization, "$bearer $token")
 
 //        val token = jwtUtil.generateToken(authentication)
 //

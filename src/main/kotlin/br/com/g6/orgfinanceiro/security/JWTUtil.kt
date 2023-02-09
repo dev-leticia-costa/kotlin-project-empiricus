@@ -1,36 +1,30 @@
 package br.com.g6.orgfinanceiro.security
 
+import br.com.g6.orgfinanceiro.model.UserDetailsImpl
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class JWTUtil  {
-
-
+class JWTUtil {
 
     @Value("\${jwt.secret}")
     private lateinit var secret: String
 
-    private val expiration: Long = 3600000
-    //expiração: 1 hora
+    private val expiration: Long = 60000
 
-    fun generateToken(authentication: Authentication): String {
-
-
-            val userPrincipal = authentication.principal as UserDetailsImpl
-             return Jwts.builder()
-                        .setSubject(userPrincipal.username)
-                        .setExpiration(Date(System.currentTimeMillis() + expiration))
-                        .signWith(SignatureAlgorithm.HS512, secret.toByteArray())
-                        .compact()
+    fun generateToken(username: String): String {
+        return Jwts.builder()
+            .setSubject(username)
+            .setExpiration(Date(System.currentTimeMillis() + expiration))
+            .signWith(SignatureAlgorithm.HS512, secret.toByteArray())
+            .compact()
     }
-    fun isTokenValid(token: String): Boolean
-    {
+
+    fun isTokenValid(token: String): Boolean {
         val claims = getClaimsToken(token)
         if (claims != null) {
             val username = claims.subject
@@ -42,9 +36,7 @@ class JWTUtil  {
         }
         return false
     }
-    fun getUserNameFromJwtToken(token: String?): String? {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject()
-    }
+
 
     private fun getClaimsToken(token: String): Claims? {
         return try {
@@ -58,6 +50,7 @@ class JWTUtil  {
         val claims = getClaimsToken(token)
         return claims?.subject
     }
-    //"Dado um username, tempo de expiração e segredo da aplicação,
-// //ele gera um Json Web Token, assinando com o secret e um algoritmo de criptografia."
+
 }
+        //"Dado um username, tempo de expiração e segredo da aplicação,
+// //ele gera um Json Web Token, assinando com o secret e um algoritmo de criptografia."
