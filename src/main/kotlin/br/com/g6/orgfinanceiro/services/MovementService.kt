@@ -1,22 +1,19 @@
 package br.com.g6.orgfinanceiro.services
 
-import br.com.g6.orgfinanceiro.dto.MovementDto
-import br.com.g6.orgfinanceiro.model.Movement
-import br.com.g6.orgfinanceiro.model.UserBalanceResponse
-import br.com.g6.orgfinanceiro.model.Users
+import br.com.g6.orgfinanceiro.dto.BalanceDTO
+import br.com.g6.orgfinanceiro.dto.MovementDTO
 import br.com.g6.orgfinanceiro.repository.MovementRepository
-import br.com.g6.orgfinanceiro.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 //@RequiredArgsConstructor
 class MovementService {
 
-    /*@Autowired
-    private val movementRepository: MovementRepository? = null
+    @Autowired
+    lateinit var repository: MovementRepository
 
+    /*
     @Autowired
     private val userDetailsService: UserDetailsServiceImpl? = null
 
@@ -71,40 +68,39 @@ class MovementService {
             throw RuntimeException("Movimento não encontrado " + idMovement + ": " + e.message)
         }
     }
-
+    */
     //~~método para pegar o saldo~~
-    fun getBalance(): UserBalanceResponse? {
-        return try {
-            val user: Optional<Users> = getCurrentUser()
-            if (user.isPresent()) {
-                val filter = MovementDto()
-                filter.setTypeMovement("receita")
-                val receitas = findByFilter(filter)
-                var totalReceita = 0.0
-                val response = UserBalanceResponse()
-                if (receitas!!.isEmpty()) {
-                    response.setReceitas(totalReceita)
-                }
-                for (movement in receitas) {
-                    totalReceita += movement.getValueMovement()
-                }
-                response.setReceitas(totalReceita)
-                filter.setTypeMovement("despesa")
-                val despesas = findByFilter(filter)
-                var totalDespesa = 0.0
-                if (despesas!!.isEmpty()) {
-                    response.setDespesas(totalDespesa)
-                }
-                for (movement in despesas) {
-                    totalDespesa += movement.getValueMovement()
-                }
-                response.setDespesas(totalDespesa)
-                response.setSaldo(totalReceita - totalDespesa)
-                response
-            } else throw RuntimeException()
-        } catch (e: Exception) {
-            throw RuntimeException("Usuário não encontrado")
+    fun getBalance(): BalanceDTO {
+        val response = BalanceDTO()
+
+        // Credit
+        val filter = MovementDTO()
+        filter.typeMovement = 1
+
+        var filterMovement = FilterMovementSpecification(filter)
+        var listCredit = repository.findAll(filterMovement)
+        var totalCredit = 0.0
+
+        for (credit in listCredit) {
+            totalCredit += credit.valueMovement
         }
+        response.setCredit(totalCredit)
+
+        // Debt
+        filter.typeMovement = 2
+
+        filterMovement = FilterMovementSpecification(filter)
+        var listDebt = repository.findAll(filterMovement)
+        var totalDebt = 0.0
+
+        for (debt in listDebt) {
+            totalDebt += debt.valueMovement
+        }
+        response.setDebt(totalDebt)
+
+        // Saldo
+        response.setBalance(totalCredit - totalDebt)
+
+        return response
     }
-*/
 }

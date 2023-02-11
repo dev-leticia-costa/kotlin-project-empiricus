@@ -1,9 +1,11 @@
 package br.com.g6.orgfinanceiro.controller
 
-import br.com.g6.orgfinanceiro.dto.MovementDto
+import br.com.g6.orgfinanceiro.dto.BalanceDTO
+import br.com.g6.orgfinanceiro.dto.MovementDTO
 import br.com.g6.orgfinanceiro.model.Movement
 import br.com.g6.orgfinanceiro.repository.MovementRepository
 import br.com.g6.orgfinanceiro.services.FilterMovementSpecification
+import br.com.g6.orgfinanceiro.services.MovementService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import javax.persistence.EntityNotFoundException
@@ -16,10 +18,18 @@ class MovementController {
     @Autowired
     lateinit var repository: MovementRepository
 
+    @Autowired
+    lateinit var movementService: MovementService
+
     @GetMapping("/filter")
-    fun findByFilter(@Valid @RequestBody dto: MovementDto): MutableList<Movement> {
+    fun findByFilter(@Valid @RequestBody dto: MovementDTO): MutableList<Movement> {
         var filterMovement = FilterMovementSpecification(dto)
         return repository.findAll(filterMovement)
+    }
+
+    @GetMapping("/balance")
+    fun getBalance(): BalanceDTO {
+        return movementService.getBalance()
     }
 
     @PostMapping()

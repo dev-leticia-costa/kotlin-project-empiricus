@@ -2,10 +2,9 @@ package br.com.g6.orgfinanceiro.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDate
-import java.util.*
 
 
-data class MovementDto (
+data class MovementDTO (
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
     var dueDateIni: LocalDate? = null,

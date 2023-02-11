@@ -1,29 +1,14 @@
 package br.com.g6.orgfinanceiro.cron
 
-import br.com.g6.orgfinanceiro.dto.MovementDto
+import br.com.g6.orgfinanceiro.dto.MovementDTO
 import br.com.g6.orgfinanceiro.repository.MovementRepository
 import br.com.g6.orgfinanceiro.services.FilterMovementSpecification
 import br.com.g6.orgfinanceiro.services.SpringMailService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
-import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.core.userdetails.User
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.provisioning.InMemoryUserDetailsManager
-import org.springframework.security.web.SecurityFilterChain
 import java.time.LocalDate
-import java.time.Period
-import java.util.*
 
 
 @Configuration
@@ -37,15 +22,15 @@ class CronJobConfig() {
     lateinit var emailService: SpringMailService;
 
     //second, minute, hour, day, month, weekday
-    //@Scheduled(cron = "* * 8 * * ?")
+    @Scheduled(cron = "* * 8 * * ?")
     // AGENDAMENTO
-    @Scheduled(cron = "0/30 * * * * ?")
+    //@Scheduled(cron = "0/30 * * * * ?")
     fun sendMail() {
         expenseDueDate() // Conta a vencer
         overdueAccount() // Conta Vencida
     }
     fun expenseDueDate() {
-        var dto = MovementDto()
+        var dto = MovementDTO()
         dto.wasPaid = false
         dto.typeMovement = 2
         var dataFilter = LocalDate.now().plusDays(1)
@@ -77,7 +62,7 @@ class CronJobConfig() {
     }
 
     fun overdueAccount() {
-        var dto: MovementDto = MovementDto()
+        var dto: MovementDTO = MovementDTO()
         dto.wasPaid = false
         dto.typeMovement = 2
         var dataFilter = LocalDate.now().minusDays(1)
